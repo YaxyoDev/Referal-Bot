@@ -187,6 +187,19 @@ async def cmd_top(message: Message):
 
     await message.answer(f"🏆 <b>TOP-10 Referal Reytingi</b>\n\n{top_text}{my_line}")
 
+@router.message(Command("clear_users"))
+async def cmd_clear_users(message: Message):
+    """Users jadvalini tozalaydi (FAQAT admin uchun)."""
+    if message.from_user.id not in ADMIN_IDS:
+        return
+
+    try:
+        await database.clear_users()
+        await message.answer(
+            "🧹 <b>Users</b> jadvalidagi barcha foydalanuvchilar o'chirildi."
+        )
+    except Exception as e:
+        await message.answer(f"❌ Xatolik: {escape(str(e))}")
 
 @router.message(Command("hisobot"))
 async def cmd_hisobot(message: Message, bot: Bot):
